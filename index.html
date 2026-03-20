@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FraudShield AI - Anti-Spoofing Demo</title>
+    <meta name="description" content="A clean, modern web demo application for FraudShield AI - a delivery platform fraud detection engine.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i data-lucide="shield-check" class="logo-icon"></i>
+                <h1>FraudShield AI</h1>
+            </div>
+            <p class="subtitle">Anti-Spoofing & Behavioral Analysis Engine</p>
+        </header>
+
+        <main>
+            <div class="dashboard-grid">
+                <!-- Input Section -->
+                <section class="card input-section">
+                    <div class="card-header">
+                        <i data-lucide="sliders-horizontal"></i>
+                        <h2>Simulation Parameters</h2>
+                    </div>
+                    <form id="fraud-form">
+                        <div class="grid-form">
+                            <div class="form-group">
+                                <label for="gps-location">GPS Location</label>
+                                <input type="text" id="gps-location" placeholder="e.g. 40.7128° N, 74.0060° W" value="40.7128° N, 74.0060° W" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="ip-location">IP Location</label>
+                                <input type="text" id="ip-location" placeholder="e.g. New York, NY" value="New York, NY" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="movement-pattern">Movement Pattern</label>
+                                <select id="movement-pattern">
+                                    <option value="natural">Natural Movement</option>
+                                    <option value="static">Static Location</option>
+                                    <option value="jumps">Sudden Jumps</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="device-integrity">Device Integrity</label>
+                                <select id="device-integrity">
+                                    <option value="normal">Normal Device</option>
+                                    <option value="mock">Mock Location Enabled</option>
+                                    <option value="rooted">Rooted Device</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="network-behavior">Network Behavior</label>
+                                <select id="network-behavior">
+                                    <option value="unique">Unique IP</option>
+                                    <option value="shared">Shared IP (Multiple Users)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="activity-pattern">Activity Pattern</label>
+                                <select id="activity-pattern">
+                                    <option value="normal">Normal Timing</option>
+                                    <option value="spike">Sudden Spike Activity</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" id="analyze-btn" class="primary-btn">
+                            <i data-lucide="search"></i>
+                            Analyze Fraud Risk
+                        </button>
+                    </form>
+                </section>
+
+                <!-- Results Section -->
+                <section class="card results-section" id="results-card">
+                    <div class="card-header">
+                        <i data-lucide="bar-chart-3"></i>
+                        <h2>Analysis Results</h2>
+                    </div>
+                    
+                    <div id="results-placeholder" class="placeholder">
+                        <i data-lucide="info" class="placeholder-icon"></i>
+                        <p>Configure parameters and click "Analyze" to see results.</p>
+                    </div>
+
+                    <div id="results-content" class="hidden">
+                        <div class="risk-stats-grid">
+                            <div class="risk-meter-container">
+                                <div class="stat-label">RISK SCORE</div>
+                                <div class="risk-value">
+                                    <span id="risk-score">0</span>%
+                                </div>
+                                <div class="progress-bar-bg">
+                                    <div id="progress-bar" class="progress-bar"></div>
+                                </div>
+                                <div class="risk-label" id="risk-level">LOW RISK</div>
+                            </div>
+                            <div class="trust-score-container">
+                                <div class="stat-label">TRUST SCORE</div>
+                                <div id="trust-chart" class="trust-chart">
+                                    <svg viewBox="0 0 36 36" class="circular-chart">
+                                        <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                        <path id="trust-circle" class="circle" stroke-dasharray="100, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                        <text x="18" y="20.35" class="percentage" id="trust-score-text">0%</text>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="fraud-network-alert" class="alert-banner hidden">
+                            <i data-lucide="network"></i>
+                            <div>
+                                <strong>Fraud Network Alert</strong>
+                                <p>This device is part of a suspected coordinated cluster.</p>
+                            </div>
+                        </div>
+
+                        <div class="analysis-details">
+                            <div class="detail-group">
+                                <h3><i data-lucide="user"></i> User Behavior Profile</h3>
+                                <div class="profile-chips" id="behavior-profile">
+                                    <!-- Dynamic chips -->
+                                </div>
+                            </div>
+                            <div class="detail-group">
+                                <h3><i data-lucide="alert-triangle"></i> Flagged Indicators</h3>
+                                <p id="risk-explanation"></p>
+                            </div>
+                            <div class="detail-group ai-insight">
+                                <h3><i data-lucide="zap"></i> AI Insight</h3>
+                                <p id="ai-insight-msg"></p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2026 FraudShield AI. All rights reserved.</p>
+        </footer>
+    </div>
+    <script src="script.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
